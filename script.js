@@ -1,292 +1,315 @@
-//==========================================
-// LOADER (SAFE)
-//==========================================
+/*======================================
+        LOADER
+======================================*/
 
-window.addEventListener("load", () => {
+window.addEventListener("load",()=>{
 
-    const loader = document.querySelector(".loader");
-
-    if (loader) {
-
-        loader.style.transition = "opacity .6s ease";
-
-        setTimeout(() => {
-
-            loader.style.opacity = "0";
-            loader.style.visibility = "hidden";
-            loader.style.pointerEvents = "none";
-
-            setTimeout(() => {
-
-                loader.style.display = "none";
-
-            }, 600);
-
-        }, 800);
-
-    }
+document.body.classList.add("loaded");
 
 });
 
 
 
-//==========================================
-// STICKY NAVBAR
-//==========================================
+/*======================================
+        STICKY NAVBAR
+======================================*/
 
-const navbar = document.querySelector(".navbar");
+const navbar=document.querySelector(".navbar");
 
-if (navbar) {
+window.addEventListener("scroll",()=>{
 
-    window.addEventListener("scroll", () => {
+if(!navbar) return;
 
-        if (window.scrollY > 80) {
+if(window.scrollY>60){
 
-            navbar.style.background = "rgba(18,18,18,.95)";
-            navbar.style.backdropFilter = "blur(18px)";
-            navbar.style.boxShadow = "0 10px 30px rgba(0,0,0,.35)";
-
-        } else {
-
-            navbar.style.background = "rgba(30,30,30,.65)";
-            navbar.style.boxShadow = "none";
-
-        }
-
-    });
+navbar.classList.add("sticky");
 
 }
 
+else{
 
+navbar.classList.remove("sticky");
 
-//==========================================
-// SMOOTH SCROLL
-//==========================================
-
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-    link.addEventListener("click", function (e) {
-
-        const target = document.querySelector(this.getAttribute("href"));
-
-        if (target) {
-
-            e.preventDefault();
-
-            target.scrollIntoView({
-
-                behavior: "smooth"
-
-            });
-
-        }
-
-    });
+}
 
 });
 
 
 
-//==========================================
-// COUNTER
-//==========================================
+/*======================================
+        MOBILE MENU
+======================================*/
 
-const counters = document.querySelectorAll(".counter");
+const menuToggle=document.querySelector(".menu-toggle");
 
-if (counters.length) {
+const navLinks=document.querySelector(".nav-links");
 
-    const observer = new IntersectionObserver((entries) => {
+if(menuToggle && navLinks){
 
-        entries.forEach(entry => {
+menuToggle.addEventListener("click",()=>{
 
-            if (!entry.isIntersecting) return;
+navLinks.classList.toggle("active");
 
-            const counter = entry.target;
+menuToggle.classList.toggle("active");
 
-            const target = Number(counter.dataset.target);
+});
 
-            let current = 0;
+document.querySelectorAll(".nav-links a").forEach(link=>{
 
-            const step = Math.max(1, target / 100);
+link.addEventListener("click",()=>{
 
-            const update = () => {
+navLinks.classList.remove("active");
 
-                current += step;
+menuToggle.classList.remove("active");
 
-                if (current < target) {
+});
 
-                    counter.innerText = Math.floor(current);
-
-                    requestAnimationFrame(update);
-
-                } else {
-
-                    counter.innerText = target + "+";
-
-                }
-
-            };
-
-            update();
-
-            observer.unobserve(counter);
-
-        });
-
-    }, {
-
-        threshold: .5
-
-    });
-
-    counters.forEach(counter => observer.observe(counter));
+});
 
 }
 
 
 
-//==========================================
-// BACK TO TOP
-//==========================================
+/*======================================
+        BACK TO TOP
+======================================*/
 
-const topBtn = document.querySelector(".top-btn");
+const topBtn=document.querySelector(".top-btn");
 
-if (topBtn) {
+window.addEventListener("scroll",()=>{
 
-    window.addEventListener("scroll", () => {
+if(!topBtn) return;
 
-        if (window.scrollY > 500) {
+if(window.scrollY>500){
 
-            topBtn.classList.add("show");
+topBtn.classList.add("show");
 
-        } else {
+}
 
-            topBtn.classList.remove("show");
+else{
 
-        }
+topBtn.classList.remove("show");
 
-    });
+}
 
-    topBtn.addEventListener("click", () => {
+});
 
-        window.scrollTo({
+if(topBtn){
 
-            top: 0,
+topBtn.addEventListener("click",()=>{
 
-            behavior: "smooth"
+window.scrollTo({
 
-        });
+top:0,
 
-    });
+behavior:"smooth"
 
-}//==========================================
-// MOBILE MENU
-//==========================================
+});
 
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
-
-if (menuToggle && navLinks) {
-
-    menuToggle.addEventListener("click", () => {
-
-        navLinks.classList.toggle("active");
-
-    });
-
-    document.querySelectorAll(".nav-links a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            navLinks.classList.remove("active");
-
-        });
-
-    });
+});
 
 }
 
 
 
-//==========================================
-// FAQ
-//==========================================
+/*======================================
+        SMOOTH SCROLL
+======================================*/
 
-const faqItems = document.querySelectorAll(".faq-item");
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
 
-faqItems.forEach(item => {
+anchor.addEventListener("click",function(e){
 
-    const question = item.querySelector(".faq-question");
-    const answer = item.querySelector(".faq-answer");
+const target=document.querySelector(this.getAttribute("href"));
 
-    if (!question || !answer) return;
+if(target){
 
-    question.addEventListener("click", () => {
+e.preventDefault();
 
-        faqItems.forEach(other => {
+target.scrollIntoView({
 
-            if (other !== item) {
+behavior:"smooth"
 
-                const otherAnswer = other.querySelector(".faq-answer");
+});
 
-                if (otherAnswer) {
+}
 
-                    otherAnswer.style.maxHeight = null;
+});
 
-                }
+}); /*======================================
+        FAQ ACCORDION
+======================================*/
 
-            }
+const faqItems=document.querySelectorAll(".faq-item");
 
-        });
+faqItems.forEach(item=>{
 
-        if (answer.style.maxHeight) {
+const question=item.querySelector(".faq-question");
 
-            answer.style.maxHeight = null;
+const answer=item.querySelector(".faq-answer");
 
-        } else {
+const icon=question.querySelector("i");
 
-            answer.style.maxHeight = answer.scrollHeight + "px";
+question.addEventListener("click",()=>{
 
-        }
+faqItems.forEach(other=>{
 
-    });
+if(other!==item){
+
+const otherAnswer=other.querySelector(".faq-answer");
+
+const otherIcon=other.querySelector(".faq-question i");
+
+otherAnswer.style.maxHeight=null;
+
+otherIcon.classList.remove("fa-minus");
+
+otherIcon.classList.add("fa-plus");
+
+}
+
+});
+
+if(answer.style.maxHeight){
+
+answer.style.maxHeight=null;
+
+icon.classList.remove("fa-minus");
+
+icon.classList.add("fa-plus");
+
+}
+
+else{
+
+answer.style.maxHeight=answer.scrollHeight+"px";
+
+icon.classList.remove("fa-plus");
+
+icon.classList.add("fa-minus");
+
+}
+
+});
 
 });
 
 
 
-//==========================================
-// SCROLL REVEAL
-//==========================================
+/*======================================
+        SCROLL REVEAL
+======================================*/
 
-const revealElements = document.querySelectorAll(
+const reveals=document.querySelectorAll(
 
-".product-card,.service-card,.review-card,.why-card,.stat-box,.gallery-item,.trust-item,.about-image,.about-content"
+".trust-card,.about-card,.stat-box,.why-card,.product-card,.gallery-card,.review-card,.contact-card,.business-box"
 
 );
 
-if (revealElements.length) {
+const revealObserver=new IntersectionObserver((entries)=>{
 
-    const revealObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry=>{
 
-        entries.forEach(entry => {
+if(entry.isIntersecting){
 
-            if (entry.isIntersecting) {
+entry.target.classList.add("show");
 
-                entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0)";
+}
 
-            }
+});
 
-        });
+},{
 
-    }, {
+threshold:.15
 
-        threshold: .15
+});
 
-    });
+reveals.forEach(card=>{
 
-    revealElements.forEach(el => {
+revealObserver.observe(card);
 
-        el.style.opacity = "0";
-        el.style
+});
+
+
+
+/*======================================
+        COUNTER
+======================================*/
+
+const stats=document.querySelectorAll(".stat-box h2");
+
+let counted=false;
+
+window.addEventListener("scroll",()=>{
+
+const section=document.querySelector(".stats");
+
+if(!section || counted) return;
+
+const top=section.offsetTop-350;
+
+if(window.scrollY>top){
+
+counted=true;
+
+stats.forEach(counter=>{
+
+const text=counter.innerText;
+
+const target=parseInt(text);
+
+if(isNaN(target)) return;
+
+let count=0;
+
+const speed=Math.ceil(target/80);
+
+const update=()=>{
+
+count+=speed;
+
+if(count<target){
+
+counter.innerText=count+"+";
+
+requestAnimationFrame(update);
+
+}
+
+else{
+
+counter.innerText=target+"+";
+
+}
+
+};
+
+update();
+
+});
+
+}
+
+});
+
+
+
+/*======================================
+        HERO FLOATING EFFECT
+======================================*/
+
+const boxes=document.querySelectorAll(".glass-box");
+
+window.addEventListener("mousemove",(e)=>{
+
+const x=(window.innerWidth/2-e.clientX)/45;
+
+const y=(window.innerHeight/2-e.clientY)/45;
+
+boxes.forEach(box=>{
+
+box.style.transform=`translate(${x}px,${y}px)`;
+
+});
+
+});
