@@ -313,3 +313,628 @@ box.style.transform=`translate(${x}px,${y}px)`;
 });
 
 });
+/*======================================
+        PARALLAX HERO
+======================================*/
+
+const hero=document.querySelector(".hero");
+
+window.addEventListener("scroll",()=>{
+
+if(!hero) return;
+
+hero.style.backgroundPositionY=window.pageYOffset*0.3+"px";
+
+});
+
+
+
+/*======================================
+        BUTTON RIPPLE
+======================================*/
+
+document.querySelectorAll(
+".primary-btn,.secondary-btn,.call-btn"
+).forEach(button=>{
+
+button.style.position="relative";
+button.style.overflow="hidden";
+
+button.addEventListener("click",function(e){
+
+const ripple=document.createElement("span");
+
+const size=Math.max(this.clientWidth,this.clientHeight);
+
+const rect=this.getBoundingClientRect();
+
+ripple.style.width=size+"px";
+ripple.style.height=size+"px";
+
+ripple.style.left=e.clientX-rect.left-size/2+"px";
+ripple.style.top=e.clientY-rect.top-size/2+"px";
+
+ripple.style.position="absolute";
+ripple.style.borderRadius="50%";
+ripple.style.background="rgba(255,255,255,.35)";
+ripple.style.transform="scale(0)";
+ripple.style.animation="ripple .6s linear";
+
+this.appendChild(ripple);
+
+setTimeout(()=>{
+
+ripple.remove();
+
+},600);
+
+});
+
+});
+
+
+
+/*======================================
+        ACTIVE MENU
+======================================*/
+
+const sections=document.querySelectorAll("section[id]");
+const navItems=document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll",()=>{
+
+let current="";
+
+sections.forEach(section=>{
+
+const top=section.offsetTop-150;
+const height=section.offsetHeight;
+
+if(pageYOffset>=top){
+
+current=section.getAttribute("id");
+
+}
+
+});
+
+navItems.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#"+current){
+
+link.classList.add("active");
+
+}
+
+});
+
+});
+
+
+
+/*======================================
+        CARD HOVER EFFECT
+======================================*/
+
+document.querySelectorAll(
+
+".product-card,.review-card,.about-card,.why-card,.gallery-card"
+
+).forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.transition=".35s";
+
+});
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+card.style.background=
+
+`radial-gradient(circle at ${x}px ${y}px,
+rgba(200,161,77,.10),
+var(--card) 65%)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.background="var(--card)";
+
+});
+
+});
+
+
+
+/*======================================
+        IMAGE FADE
+======================================*/
+
+document.querySelectorAll("img").forEach(img=>{
+
+img.style.opacity="0";
+
+img.style.transition=".8s";
+
+img.onload=()=>{
+
+img.style.opacity="1";
+
+};
+
+});
+
+
+
+/*======================================
+        RIPPLE KEYFRAME
+======================================*/
+
+const style=document.createElement("style");
+
+style.innerHTML=`
+
+@keyframes ripple{
+
+0%{
+
+transform:scale(0);
+
+opacity:.6;
+
+}
+
+100%{
+
+transform:scale(4);
+
+opacity:0;
+
+}
+
+}
+
+.nav-links a.active{
+
+color:#C8A14D;
+
+}
+
+`;
+
+document.head.appendChild(style); /*======================================
+        PARALLAX HERO
+======================================*/
+
+const hero=document.querySelector(".hero");
+
+window.addEventListener("scroll",()=>{
+
+if(!hero) return;
+
+hero.style.backgroundPositionY=window.pageYOffset*0.3+"px";
+
+});
+
+
+
+/*======================================
+        BUTTON RIPPLE
+======================================*/
+
+document.querySelectorAll(
+".primary-btn,.secondary-btn,.call-btn"
+).forEach(button=>{
+
+button.style.position="relative";
+button.style.overflow="hidden";
+
+button.addEventListener("click",function(e){
+
+const ripple=document.createElement("span");
+
+const size=Math.max(this.clientWidth,this.clientHeight);
+
+const rect=this.getBoundingClientRect();
+
+ripple.style.width=size+"px";
+ripple.style.height=size+"px";
+
+ripple.style.left=e.clientX-rect.left-size/2+"px";
+ripple.style.top=e.clientY-rect.top-size/2+"px";
+
+ripple.style.position="absolute";
+ripple.style.borderRadius="50%";
+ripple.style.background="rgba(255,255,255,.35)";
+ripple.style.transform="scale(0)";
+ripple.style.animation="ripple .6s linear";
+
+this.appendChild(ripple);
+
+setTimeout(()=>{
+
+ripple.remove();
+
+},600);
+
+});
+
+});
+
+
+
+/*======================================
+        ACTIVE MENU
+======================================*/
+
+const sections=document.querySelectorAll("section[id]");
+const navItems=document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll",()=>{
+
+let current="";
+
+sections.forEach(section=>{
+
+const top=section.offsetTop-150;
+const height=section.offsetHeight;
+
+if(pageYOffset>=top){
+
+current=section.getAttribute("id");
+
+}
+
+});
+
+navItems.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#"+current){
+
+link.classList.add("active");
+
+}
+
+});
+
+});
+
+
+
+/*======================================
+        CARD HOVER EFFECT
+======================================*/
+
+document.querySelectorAll(
+
+".product-card,.review-card,.about-card,.why-card,.gallery-card"
+
+).forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.transition=".35s";
+
+});
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+card.style.background=
+
+`radial-gradient(circle at ${x}px ${y}px,
+rgba(200,161,77,.10),
+var(--card) 65%)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.background="var(--card)";
+
+});
+
+});
+
+
+
+/*======================================
+        IMAGE FADE
+======================================*/
+
+document.querySelectorAll("img").forEach(img=>{
+
+img.style.opacity="0";
+
+img.style.transition=".8s";
+
+img.onload=()=>{
+
+img.style.opacity="1";
+
+};
+
+});
+
+
+
+/*======================================
+        RIPPLE KEYFRAME
+======================================*/
+
+const style=document.createElement("style");
+
+style.innerHTML=`
+
+@keyframes ripple{
+
+0%{
+
+transform:scale(0);
+
+opacity:.6;
+
+}
+
+100%{
+
+transform:scale(4);
+
+opacity:0;
+
+}
+
+}
+
+.nav-links a.active{
+
+color:#C8A14D;
+
+}
+
+`;
+
+document.head.appendChild(style); /*======================================
+        CURSOR GLOW EFFECT
+======================================*/
+
+const glow=document.createElement("div");
+
+glow.className="cursor-glow";
+
+document.body.appendChild(glow);
+
+window.addEventListener("mousemove",(e)=>{
+
+glow.style.left=e.clientX+"px";
+
+glow.style.top=e.clientY+"px";
+
+});
+
+
+
+/*======================================
+        FLOATING ANIMATION
+======================================*/
+
+document.querySelectorAll(".glass-box").forEach((box,index)=>{
+
+box.animate([
+
+{
+
+transform:"translateY(0px)"
+
+},
+
+{
+
+transform:"translateY(-12px)"
+
+},
+
+{
+
+transform:"translateY(0px)"
+
+}
+
+],{
+
+duration:3000+(index*400),
+
+iterations:Infinity,
+
+easing:"ease-in-out"
+
+});
+
+});
+
+
+
+/*======================================
+        FADE IN SECTIONS
+======================================*/
+
+const allSections=document.querySelectorAll("section");
+
+const sectionObserver=new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.style.opacity="1";
+
+entry.target.style.transform="translateY(0)";
+
+}
+
+});
+
+},{
+
+threshold:.10
+
+});
+
+allSections.forEach(section=>{
+
+section.style.opacity="0";
+
+section.style.transform="translateY(60px)";
+
+section.style.transition=".8s ease";
+
+sectionObserver.observe(section);
+
+});
+
+
+
+/*======================================
+        BUTTON HOVER SCALE
+======================================*/
+
+document.querySelectorAll(
+
+".primary-btn,.secondary-btn,.call-btn"
+
+).forEach(btn=>{
+
+btn.addEventListener("mouseenter",()=>{
+
+btn.style.transform="scale(1.05)";
+
+});
+
+btn.addEventListener("mouseleave",()=>{
+
+btn.style.transform="scale(1)";
+
+});
+
+});
+
+
+
+/*======================================
+        PREVENT IMAGE DRAG
+======================================*/
+
+document.querySelectorAll("img").forEach(img=>{
+
+img.setAttribute("draggable","false");
+
+});
+
+
+
+/*======================================
+        SCROLL PROGRESS BAR
+======================================*/
+
+const progress=document.createElement("div");
+
+progress.style.position="fixed";
+
+progress.style.top="0";
+
+progress.style.left="0";
+
+progress.style.height="4px";
+
+progress.style.width="0%";
+
+progress.style.background="#C8A14D";
+
+progress.style.zIndex="999999";
+
+document.body.appendChild(progress);
+
+window.addEventListener("scroll",()=>{
+
+const scrollTop=document.documentElement.scrollTop;
+
+const scrollHeight=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+
+const percent=(scrollTop/scrollHeight)*100;
+
+progress.style.width=percent+"%";
+
+});
+
+
+
+/*======================================
+        CONSOLE BRANDING
+======================================*/
+
+console.clear();
+
+console.log(
+
+"%cKhushi Marble & Tiles",
+
+"font-size:28px;color:#C8A14D;font-weight:bold;"
+
+);
+
+console.log(
+
+"%cPremium Website Developed Successfully",
+
+"font-size:15px;color:white;"
+
+);
+
+
+
+/*======================================
+        PAGE LOADED
+======================================*/
+
+window.addEventListener("load",()=>{
+
+console.log("Website Loaded Successfully");
+
+});
+
+
+
+/*======================================
+        PERFORMANCE
+======================================*/
+
+let resizeTimer;
+
+window.addEventListener("resize",()=>{
+
+clearTimeout(resizeTimer);
+
+resizeTimer=setTimeout(()=>{
+
+console.log("Layout Updated");
+
+},250);
+
+});
