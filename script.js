@@ -1,273 +1,278 @@
-/*========================================
+/*=========================================
 KHUSHI MARBLE AND TILES
-script.js
-========================================*/
+PREMIUM SCRIPT.JS
+=========================================*/
 
+document.addEventListener("DOMContentLoaded", () => {
 
+    /*==========================
+      NAVBAR SCROLL
+    ==========================*/
 
-/*========================================
-NAVBAR SCROLL
-========================================*/
+    const navbar = document.querySelector(".navbar");
 
-const navbar = document.querySelector(".navbar");
+    window.addEventListener("scroll", () => {
 
-window.addEventListener("scroll", () => {
+        if (window.scrollY > 80) {
 
-    if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
 
-        navbar.classList.add("scrolled");
+        } else {
 
-    } else {
-
-        navbar.classList.remove("scrolled");
-
-    }
-
-});
-
-
-
-/*========================================
-ACTIVE MENU
-========================================*/
-
-const sections = document.querySelectorAll("section");
-
-const navLinks = document.querySelectorAll("nav ul li a");
-
-window.addEventListener("scroll", () => {
-
-    let current = "";
-
-    sections.forEach(section => {
-
-        const sectionTop = section.offsetTop - 180;
-
-        const sectionHeight = section.clientHeight;
-
-        if (pageYOffset >= sectionTop) {
-
-            current = section.getAttribute("id");
+            navbar.classList.remove("scrolled");
 
         }
 
     });
 
-    navLinks.forEach(link => {
 
-        link.classList.remove("active");
 
-        if (link.getAttribute("href") == "#" + current) {
+    /*==========================
+      SMOOTH SCROLL
+    ==========================*/
 
-            link.classList.add("active");
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
 
-        }
+        link.addEventListener("click", function(e){
 
-    });
+            const target = document.querySelector(this.getAttribute("href"));
 
-});
+            if(target){
 
+                e.preventDefault();
 
+                target.scrollIntoView({
 
-/*========================================
-SMOOTH SCROLL
-========================================*/
+                    behavior:"smooth",
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    block:"start"
 
-    anchor.addEventListener("click", function(e){
-
-        e.preventDefault();
-
-        const target = document.querySelector(this.getAttribute("href"));
-
-        if(target){
-
-            target.scrollIntoView({
-
-                behavior:"smooth"
-
-            });
-
-        }
-
-    });
-
-});
-
-
-
-/*========================================
-COUNTER
-========================================*/
-
-const counters = document.querySelectorAll(".stat-card h2");
-
-let counterStarted = false;
-
-function startCounter(){
-
-    counters.forEach(counter=>{
-
-        const target = parseInt(counter.innerText.replace(/\D/g,""));
-
-        let count = 0;
-
-        const increment = Math.ceil(target / 100);
-
-        function update(){
-
-            count += increment;
-
-            if(count < target){
-
-                counter.innerText = count + "+";
-
-                requestAnimationFrame(update);
-
-            }else{
-
-                counter.innerText = target + "+";
-
-            }
-
-        }
-
-        update();
-
-    });
-
-}
-
-window.addEventListener("scroll",()=>{
-
-    const stats = document.querySelector(".stats");
-
-    if(!stats) return;
-
-    if(window.scrollY > stats.offsetTop - 300 && !counterStarted){
-
-        startCounter();
-
-        counterStarted = true;
-
-    }
-
-});
-
-
-
-/*========================================
-SCROLL REVEAL
-========================================*/
-
-const revealElements = document.querySelectorAll(
-
-".about-wrapper,.why-card,.category-card,.collection-item,.showroom-wrapper,.process-card,.testimonial-card,.faq-item,.contact-wrapper"
-
-);
-
-const reveal = ()=>{
-
-    revealElements.forEach(item=>{
-
-        const top = item.getBoundingClientRect().top;
-
-        if(top < window.innerHeight - 100){
-
-            item.style.opacity="1";
-
-            item.style.transform="translateY(0)";
-
-        }
-
-    });
-
-}
-
-revealElements.forEach(item=>{
-
-    item.style.opacity="0";
-
-    item.style.transform="translateY(60px)";
-
-    item.style.transition=".8s ease";
-
-});
-
-window.addEventListener("scroll",reveal);
-
-reveal();
-
-
-
-/*========================================
-FAQ
-========================================*/
-
-const faqItems = document.querySelectorAll(".faq-item");
-
-faqItems.forEach(item=>{
-
-    const btn = item.querySelector(".faq-question");
-
-    const answer = item.querySelector(".faq-answer");
-
-    btn.addEventListener("click",()=>{
-
-        faqItems.forEach(i=>{
-
-            if(i!==item){
-
-                i.querySelector(".faq-answer").style.display="none";
-
-                i.querySelector(".faq-question span").innerText="+";
+                });
 
             }
 
         });
 
-        if(answer.style.display==="block"){
+    });
 
-            answer.style.display="none";
 
-            btn.querySelector("span").innerText="+";
 
-        }else{
+    /*==========================
+      ACTIVE NAVIGATION
+    ==========================*/
 
-            answer.style.display="block";
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll("nav a");
 
-            btn.querySelector("span").innerText="-";
+    function activeMenu(){
+
+        let current = "";
+
+        sections.forEach(section=>{
+
+            const top = section.offsetTop - 150;
+
+            const height = section.offsetHeight;
+
+            if(window.scrollY >= top){
+
+                current = section.id;
+
+            }
+
+        });
+
+        navLinks.forEach(link=>{
+
+            link.classList.remove("active");
+
+            if(link.getAttribute("href")==="#" + current){
+
+                link.classList.add("active");
+
+            }
+
+        });
+
+    }
+
+    window.addEventListener("scroll",activeMenu);
+
+
+
+    /*==========================
+      SCROLL REVEAL
+    ==========================*/
+
+    const revealItems = document.querySelectorAll(
+
+".section-heading,.about-wrapper,.why-card,.category-card,.collection-item,.showroom-wrapper,.process-card,.testimonial-card,.faq-item,.contact-card,.contact-form-box,.cta-wrapper,.footer-top"
+
+    );
+
+    const reveal = ()=>{
+
+        revealItems.forEach(item=>{
+
+            const top = item.getBoundingClientRect().top;
+
+            if(top < window.innerHeight - 100){
+
+                item.style.opacity = "1";
+
+                item.style.transform = "translateY(0)";
+
+            }
+
+        });
+
+    }
+
+    revealItems.forEach(item=>{
+
+        item.style.opacity = "0";
+
+        item.style.transform = "translateY(60px)";
+
+        item.style.transition = ".8s ease";
+
+    });
+
+    reveal();
+
+    window.addEventListener("scroll",reveal);
+
+
+
+    /*==========================
+      COUNTER
+    ==========================*/
+
+    const counters = document.querySelectorAll(".stat-card h2");
+
+    let counterRun = false;
+
+    function runCounter(){
+
+        counters.forEach(counter=>{
+
+            const original = counter.innerText;
+
+            const target = parseInt(original.replace(/\D/g,""));
+
+            let current = 0;
+
+            const step = Math.max(1,Math.ceil(target/120));
+
+            function update(){
+
+                current += step;
+
+                if(current < target){
+
+                    counter.innerText = current + "+";
+
+                    requestAnimationFrame(update);
+
+                }else{
+
+                    counter.innerText = original;
+
+                }
+
+            }
+
+            update();
+
+        });
+
+    }
+
+    window.addEventListener("scroll",()=>{
+
+        const stats = document.querySelector(".stats");
+
+        if(!stats) return;
+
+        if(window.scrollY > stats.offsetTop-350 && !counterRun){
+
+            runCounter();
+
+            counterRun = true;
 
         }
 
     });
 
-});
+
+
+    /*==========================
+      FAQ
+    ==========================*/
+
+    document.querySelectorAll(".faq-item").forEach(item=>{
+
+        const btn = item.querySelector(".faq-question");
+
+        const answer = item.querySelector(".faq-answer");
+
+        const icon = btn.querySelector("span");
+
+        btn.addEventListener("click",()=>{
+
+            document.querySelectorAll(".faq-item").forEach(other=>{
+
+                if(other!==item){
+
+                    other.querySelector(".faq-answer").style.display="none";
+
+                    other.querySelector("span").textContent="+";
+
+                }
+
+            });
+
+            if(answer.style.display==="block"){
+
+                answer.style.display="none";
+
+                icon.textContent="+";
+
+            }else{
+
+                answer.style.display="block";
+
+                icon.textContent="−";
+
+            }
+
+        });
+
+    });
 
 
 
-/*========================================
-CONTACT FORM
-========================================*/
+    /*==========================
+      CONTACT FORM
+    ==========================*/
 
-const form = document.querySelector("form");
+    const form = document.querySelector(".contact-form-box form");
 
-if(form){
+    if(form){
 
-form.addEventListener("submit",function(e){
+        form.addEventListener("submit",(e)=>{
 
-e.preventDefault();
+            e.preventDefault();
 
-const name = form.querySelector('input[type="text"]').value;
+            const name = form.querySelector('input[type="text"]').value;
 
-const phone = form.querySelector('input[type="tel"]').value;
+            const phone = form.querySelector('input[type="tel"]').value;
 
-const requirement = form.querySelector("select").value;
+            const product = form.querySelector("select").value;
 
-const message = form.querySelector("textarea").value;
+            const message = form.querySelector("textarea").value;
 
-const whatsappMessage =
+            const text =
 
 `Hello Khushi Marble And Tiles,
 
@@ -275,60 +280,84 @@ Name : ${name}
 
 Phone : ${phone}
 
-Requirement : ${requirement}
+Requirement : ${product}
 
 Message :
 
 ${message}`;
 
-window.open(
+            window.open(
 
-`https://wa.me/918087003749?text=${encodeURIComponent(whatsappMessage)}`,
+"https://wa.me/918087003749?text=" +
+
+encodeURIComponent(text),
 
 "_blank"
 
 );
 
-form.reset();
+            form.reset();
 
-});
+        });
 
-}
-
-
-
-/*========================================
-SCROLL TOP
-========================================*/
-
-const scrollBtn = document.querySelector(".scroll-top");
-
-window.addEventListener("scroll",()=>{
-
-if(window.scrollY>500){
-
-scrollBtn.style.opacity="1";
-
-scrollBtn.style.visibility="visible";
-
-}else{
-
-scrollBtn.style.opacity="0";
-
-scrollBtn.style.visibility="hidden";
-
-}
-
-});
+    }
 
 
 
-/*========================================
-PRELOADER PLACEHOLDER
-========================================*/
+    /*==========================
+      SCROLL TOP
+    ==========================*/
 
-window.addEventListener("load",()=>{
+    const topBtn = document.querySelector(".scroll-top");
 
-document.body.classList.add("loaded");
+    if(topBtn){
+
+        window.addEventListener("scroll",()=>{
+
+            if(window.scrollY > 500){
+
+                topBtn.classList.add("show");
+
+            }else{
+
+                topBtn.classList.remove("show");
+
+            }
+
+        });
+
+        topBtn.addEventListener("click",()=>{
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
+
+        });
+
+    }
+
+
+
+    /*==========================
+      CARD HOVER EFFECT
+    ==========================*/
+
+    document.querySelectorAll(
+
+".category-card,.collection-item,.why-card,.testimonial-card,.contact-card"
+
+    ).forEach(card=>{
+
+        card.addEventListener("mouseenter",()=>{
+
+            card.style.transition=".35s";
+
+        });
+
+    });
 
 });
