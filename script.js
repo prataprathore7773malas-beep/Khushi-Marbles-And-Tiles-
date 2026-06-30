@@ -1,5 +1,5 @@
 /*==========================================
-            LOADER
+        WEBSITE READY
 ==========================================*/
 
 window.addEventListener("load", () => {
@@ -15,7 +15,7 @@ setTimeout(()=>{
 loader.style.opacity="0";
 loader.style.visibility="hidden";
 
-},800);
+},700);
 
 }
 
@@ -24,10 +24,10 @@ loader.style.visibility="hidden";
 
 
 /*==========================================
-            STICKY NAVBAR
+        STICKY NAVBAR
 ==========================================*/
 
-const navbar = document.querySelector(".navbar");
+const navbar=document.querySelector(".navbar");
 
 window.addEventListener("scroll",()=>{
 
@@ -40,8 +40,7 @@ navbar.style.marginTop="10px";
 
 }else{
 
-navbar.style.background="rgba(18,18,18,.82)";
-navbar.style.backdropFilter="blur(20px)";
+navbar.style.background="rgba(18,18,18,.80)";
 navbar.style.boxShadow="none";
 navbar.style.marginTop="18px";
 
@@ -52,10 +51,11 @@ navbar.style.marginTop="18px";
 
 
 /*==========================================
-            MOBILE MENU
+        MOBILE MENU
 ==========================================*/
 
 const menuToggle=document.querySelector(".menu-toggle");
+
 const navLinks=document.querySelector(".nav-links");
 
 if(menuToggle){
@@ -81,14 +81,14 @@ navLinks.classList.remove("active");
 
 
 /*==========================================
-            BACK TO TOP
+        BACK TO TOP
 ==========================================*/
 
 const topBtn=document.querySelector(".top-btn");
 
 window.addEventListener("scroll",()=>{
 
-if(window.pageYOffset>500){
+if(window.scrollY>500){
 
 topBtn.classList.add("show");
 
@@ -147,10 +147,11 @@ behavior:"smooth"
 
 
 /*==========================================
-        ACTIVE NAV LINK
+        ACTIVE NAVBAR LINK
 ==========================================*/
 
 const sections=document.querySelectorAll("section");
+
 const navItems=document.querySelectorAll(".nav-links a");
 
 window.addEventListener("scroll",()=>{
@@ -159,7 +160,7 @@ let current="";
 
 sections.forEach(section=>{
 
-const sectionTop=section.offsetTop-120;
+const sectionTop=section.offsetTop-150;
 
 const sectionHeight=section.clientHeight;
 
@@ -175,7 +176,7 @@ navItems.forEach(link=>{
 
 link.classList.remove("active");
 
-if(link.getAttribute("href")==="#" + current){
+if(link.getAttribute("href")==="#"+current){
 
 link.classList.add("active");
 
@@ -184,120 +185,12 @@ link.classList.add("active");
 });
 
 }); /*==========================================
-            FAQ ACCORDION
-==========================================*/
-
-const faqItems = document.querySelectorAll(".faq-item");
-
-faqItems.forEach(item=>{
-
-const question=item.querySelector(".faq-question");
-const answer=item.querySelector(".faq-answer");
-const icon=item.querySelector("i");
-
-question.addEventListener("click",()=>{
-
-faqItems.forEach(other=>{
-
-if(other!==item){
-
-other.querySelector(".faq-answer").style.maxHeight=null;
-other.querySelector("i").classList.remove("fa-minus");
-other.querySelector("i").classList.add("fa-plus");
-
-}
-
-});
-
-if(answer.style.maxHeight){
-
-answer.style.maxHeight=null;
-
-icon.classList.remove("fa-minus");
-icon.classList.add("fa-plus");
-
-}else{
-
-answer.style.maxHeight=answer.scrollHeight+"px";
-
-icon.classList.remove("fa-plus");
-icon.classList.add("fa-minus");
-
-}
-
-});
-
-});
-
-
-
-/*==========================================
-        COUNTER ANIMATION
-==========================================*/
-
-const counters=document.querySelectorAll(".counter");
-
-const counterObserver=new IntersectionObserver(entries=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-const counter=entry.target;
-
-const target=+counter.dataset.target;
-
-let count=0;
-
-const speed=target/120;
-
-const updateCounter=()=>{
-
-count+=speed;
-
-if(count<target){
-
-counter.innerText=Math.floor(count);
-
-requestAnimationFrame(updateCounter);
-
-}else{
-
-counter.innerText=target+"+";
-
-}
-
-};
-
-updateCounter();
-
-counterObserver.unobserve(counter);
-
-}
-
-});
-
-},{
-
-threshold:.5
-
-});
-
-counters.forEach(counter=>{
-
-counterObserver.observe(counter);
-
-});
-
-
-
-/*==========================================
         SCROLL REVEAL
 ==========================================*/
 
 const revealElements=document.querySelectorAll(
 
-".about-content,.about-image,.why-card,.product-card,.gallery-card,.business-content,.business-image,.review-card,.contact-card"
+".about-image,.about-content,.why-card,.product-card,.collection-cta,.gallery-card,.business-image,.business-content,.review-card,.faq-item,.contact-card"
 
 );
 
@@ -330,21 +223,97 @@ revealObserver.observe(el);
 
 
 /*==========================================
+        FAQ ACCORDION
+==========================================*/
+
+const faqItems=document.querySelectorAll(".faq-item");
+
+faqItems.forEach(item=>{
+
+const question=item.querySelector(".faq-question");
+const answer=item.querySelector(".faq-answer");
+const icon=item.querySelector("i");
+
+question.addEventListener("click",()=>{
+
+faqItems.forEach(other=>{
+
+if(other!==item){
+
+other.querySelector(".faq-answer").style.maxHeight=null;
+
+other.querySelector("i").classList.remove("fa-minus");
+other.querySelector("i").classList.add("fa-plus");
+
+}
+
+});
+
+if(answer.style.maxHeight){
+
+answer.style.maxHeight=null;
+
+icon.classList.remove("fa-minus");
+icon.classList.add("fa-plus");
+
+}else{
+
+answer.style.maxHeight=answer.scrollHeight+"px";
+
+icon.classList.remove("fa-plus");
+icon.classList.add("fa-minus");
+
+}
+
+});
+
+});
+
+
+
+/*==========================================
+        HERO PARALLAX
+==========================================*/
+
+const hero=document.querySelector(".hero");
+
+window.addEventListener("scroll",()=>{
+
+if(hero){
+
+hero.style.backgroundPositionY=
+
+window.pageYOffset*0.35+"px";
+
+}
+
+});
+
+
+
+/*==========================================
         IMAGE FADE EFFECT
 ==========================================*/
 
-const allImages=document.querySelectorAll("img");
-
-allImages.forEach(img=>{
+document.querySelectorAll("img").forEach(img=>{
 
 img.style.opacity="0";
+
 img.style.transition="opacity .8s ease";
+
+if(img.complete){
+
+img.style.opacity="1";
+
+}else{
 
 img.onload=()=>{
 
 img.style.opacity="1";
 
 };
+
+}
 
 });
 
@@ -354,9 +323,7 @@ img.style.opacity="1";
         GALLERY HOVER EFFECT
 ==========================================*/
 
-const galleryCards=document.querySelectorAll(".gallery-card");
-
-galleryCards.forEach(card=>{
+document.querySelectorAll(".gallery-card").forEach(card=>{
 
 card.addEventListener("mouseenter",()=>{
 
@@ -375,21 +342,26 @@ card.style.transform="translateY(0)";
 
 
 /*==========================================
-        PARALLAX HERO
+        BUSINESS INFO HOVER
 ==========================================*/
 
-const hero=document.querySelector(".hero");
+document.querySelectorAll(".business-content li")
 
-window.addEventListener("scroll",()=>{
+.forEach(item=>{
 
-if(hero){
+item.addEventListener("mouseenter",()=>{
 
-hero.style.backgroundPositionY=
-window.pageYOffset*0.35+"px";
+item.style.transform="translateY(-5px)";
 
-}
+});
 
-});/*==========================================
+item.addEventListener("mouseleave",()=>{
+
+item.style.transform="translateY(0)";
+
+});
+
+}); /*==========================================
         BUTTON RIPPLE EFFECT
 ==========================================*/
 
@@ -432,7 +404,7 @@ ripple.remove();
 
 
 /*==========================================
-        HERO IMAGE FLOAT
+        HERO IMAGE PARALLAX
 ==========================================*/
 
 const heroImage=document.querySelector(".hero-image img");
@@ -441,9 +413,9 @@ if(heroImage){
 
 window.addEventListener("mousemove",(e)=>{
 
-const x=(window.innerWidth/2-e.clientX)/40;
+const x=(window.innerWidth/2-e.clientX)/45;
 
-const y=(window.innerHeight/2-e.clientY)/40;
+const y=(window.innerHeight/2-e.clientY)/45;
 
 heroImage.style.transform=
 
@@ -465,9 +437,7 @@ heroImage.style.transform="translate(0,0)";
         PRODUCT CARD TILT
 ==========================================*/
 
-const productCards=document.querySelectorAll(".product-card");
-
-productCards.forEach(card=>{
+document.querySelectorAll(".product-card").forEach(card=>{
 
 card.addEventListener("mousemove",(e)=>{
 
@@ -492,7 +462,9 @@ translateY(-10px)`;
 
 card.addEventListener("mouseleave",()=>{
 
-card.style.transform="perspective(1000px) rotateX(0) rotateY(0)";
+card.style.transform=
+
+"perspective(1000px) rotateX(0) rotateY(0)";
 
 });
 
@@ -501,7 +473,7 @@ card.style.transform="perspective(1000px) rotateX(0) rotateY(0)";
 
 
 /*==========================================
-        GALLERY IMAGE ZOOM
+        GALLERY IMAGE POPUP
 ==========================================*/
 
 document.querySelectorAll(".gallery-card img")
@@ -518,7 +490,7 @@ popup.innerHTML=`
 
 <div class="popup-bg">
 
-<img src="${image.src}">
+<img src="${image.src}" alt="Gallery Image">
 
 </div>
 
@@ -539,44 +511,18 @@ popup.remove();
 
 
 /*==========================================
-        NAVBAR LINK HOVER
+        FLOATING BUTTON EFFECT
 ==========================================*/
 
-document.querySelectorAll(".nav-links a")
-
-.forEach(link=>{
-
-link.addEventListener("mouseenter",()=>{
-
-link.style.letterSpacing="1px";
-
-});
-
-link.addEventListener("mouseleave",()=>{
-
-link.style.letterSpacing="0";
-
-});
-
-});
-
-
-
-/*==========================================
-        FLOATING BUTTON ANIMATION
-==========================================*/
-
-const floats=document.querySelectorAll(
+document.querySelectorAll(
 
 ".whatsapp-float,.call-float"
 
-);
-
-floats.forEach(btn=>{
+).forEach(btn=>{
 
 btn.addEventListener("mouseenter",()=>{
 
-btn.style.transform="scale(1.15)";
+btn.style.transform="scale(1.12)";
 
 });
 
@@ -591,7 +537,7 @@ btn.style.transform="scale(1)";
 
 
 /*==========================================
-        DISABLE IMAGE DRAG
+        PREVENT IMAGE DRAG
 ==========================================*/
 
 document.querySelectorAll("img").forEach(img=>{
@@ -614,8 +560,8 @@ document.body.style.transition="opacity .8s ease";
 
 document.body.style.opacity="1";
 
-}); /*==========================================
-        LAZY LOADING IMAGES
+});/*==========================================
+        LAZY IMAGE LOADING
 ==========================================*/
 
 const lazyImages=document.querySelectorAll("img");
@@ -637,12 +583,36 @@ observer.unobserve(img);
 });
 
 },{
-threshold:0.1
+threshold:.1
 });
 
 lazyImages.forEach(img=>{
 
 imageObserver.observe(img);
+
+});
+
+
+
+/*==========================================
+        SCROLL PROGRESS BAR
+==========================================*/
+
+const progressBar=document.createElement("div");
+
+progressBar.className="scroll-progress";
+
+document.body.appendChild(progressBar);
+
+window.addEventListener("scroll",()=>{
+
+const scrollTop=window.pageYOffset;
+
+const docHeight=document.documentElement.scrollHeight-window.innerHeight;
+
+const percent=(scrollTop/docHeight)*100;
+
+progressBar.style.width=percent+"%";
 
 });
 
@@ -670,25 +640,25 @@ console.log("Layout Updated");
         PRELOAD HERO IMAGE
 ==========================================*/
 
-const preloadImage=new Image();
+const preloadHero=new Image();
 
-preloadImage.src="hero.png";
+preloadHero.src="hero.png";
 
 
 
 /*==========================================
-        SMOOTH BUTTON HOVER
+        BUTTON HOVER OPTIMIZATION
 ==========================================*/
 
 document.querySelectorAll(
 
 ".primary-btn,.secondary-btn,.call-btn"
 
-).forEach(btn=>{
+).forEach(button=>{
 
-btn.addEventListener("mouseenter",()=>{
+button.addEventListener("mouseenter",()=>{
 
-btn.style.transition=".35s";
+button.style.transition=".35s ease";
 
 });
 
@@ -713,34 +683,6 @@ e.preventDefault();
 
 
 /*==========================================
-        SCROLL PROGRESS BAR
-==========================================*/
-
-const progress=document.createElement("div");
-
-progress.className="scroll-progress";
-
-document.body.appendChild(progress);
-
-window.addEventListener("scroll",()=>{
-
-const totalHeight=
-
-document.documentElement.scrollHeight-
-
-window.innerHeight;
-
-const progressHeight=
-
-(window.pageYOffset/totalHeight)*100;
-
-progress.style.width=progressHeight+"%";
-
-});
-
-
-
-/*==========================================
         CONSOLE BRANDING
 ==========================================*/
 
@@ -750,7 +692,7 @@ console.log(
 
 "%cKhushi Marble & Tiles",
 
-"font-size:26px;color:#C9A227;font-weight:bold;"
+"font-size:28px;font-weight:bold;color:#C9A227;"
 
 );
 
@@ -758,13 +700,13 @@ console.log(
 
 "%cPremium Marble • Granite • Designer Tiles",
 
-"font-size:14px;color:#ffffff;"
+"font-size:15px;color:#ffffff;"
 
 );
 
 console.log(
 
-"%cDesigned & Developed By Marwar Infotech",
+"%cDesigned & Developed by Marwar Infotech",
 
 "font-size:14px;color:#C9A227;"
 
@@ -786,4 +728,4 @@ console.log("Website Loaded Successfully");
 
 /*==========================================
         END OF SCRIPT
-==========================================*/
+==========================================*/ 
