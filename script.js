@@ -1,280 +1,280 @@
+/*==================================================
+KHUSHI MARBLES AND TILES
+PREMIUM SCRIPT
+PART 1
+==================================================*/
+
+document.addEventListener("DOMContentLoaded", function () {
+
 /*=========================================
-KHUSHI MARBLE AND TILES
-PREMIUM SCRIPT.JS
+NAVBAR SCROLL
 =========================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+const navbar = document.querySelector(".navbar");
 
-    /*==========================
-      NAVBAR SCROLL
-    ==========================*/
+window.addEventListener("scroll", function () {
 
-    const navbar = document.querySelector(".navbar");
+if (window.scrollY > 80) {
 
-    window.addEventListener("scroll", () => {
+navbar.classList.add("scrolled");
 
-        if (window.scrollY > 80) {
+} else {
 
-            navbar.classList.add("scrolled");
+navbar.classList.remove("scrolled");
 
-        } else {
+}
 
-            navbar.classList.remove("scrolled");
+});
 
-        }
+/*=========================================
+ACTIVE MENU
+=========================================*/
 
-    });
+const sections = document.querySelectorAll("section[id]");
 
+const navLinks = document.querySelectorAll("nav ul li a");
 
+function activeMenu() {
 
-    /*==========================
-      SMOOTH SCROLL
-    ==========================*/
+let current = "";
 
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
+sections.forEach(section => {
 
-        link.addEventListener("click", function(e){
+const sectionTop = section.offsetTop - 180;
 
-            const target = document.querySelector(this.getAttribute("href"));
+const sectionHeight = section.offsetHeight;
 
-            if(target){
+if (window.scrollY >= sectionTop &&
+window.scrollY < sectionTop + sectionHeight) {
 
-                e.preventDefault();
+current = section.getAttribute("id");
 
-                target.scrollIntoView({
+}
 
-                    behavior:"smooth",
+});
 
-                    block:"start"
+navLinks.forEach(link => {
 
-                });
+link.classList.remove("active");
 
-            }
+if (link.getAttribute("href") === "#" + current) {
 
-        });
+link.classList.add("active");
 
-    });
+}
 
+});
 
+}
 
-    /*==========================
-      ACTIVE NAVIGATION
-    ==========================*/
+window.addEventListener("scroll", activeMenu);
 
-    const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll("nav a");
+/*=========================================
+SMOOTH SCROLL
+=========================================*/
 
-    function activeMenu(){
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-        let current = "";
+anchor.addEventListener("click", function (e) {
 
-        sections.forEach(section=>{
+const target = document.querySelector(this.getAttribute("href"));
 
-            const top = section.offsetTop - 150;
+if (target) {
 
-            const height = section.offsetHeight;
+e.preventDefault();
 
-            if(window.scrollY >= top){
+target.scrollIntoView({
 
-                current = section.id;
+behavior: "smooth",
 
-            }
+block: "start"
 
-        });
+});
 
-        navLinks.forEach(link=>{
+}
 
-            link.classList.remove("active");
+});
 
-            if(link.getAttribute("href")==="#" + current){
+});
 
-                link.classList.add("active");
+/*=========================================
+SCROLL REVEAL
+=========================================*/
 
-            }
+const revealItems = document.querySelectorAll(
 
-        });
+".stat-card,.about-image,.about-content,.why-card,.category-card,.collection-card,.showroom-content,.showroom-image,.process-card,.testimonial-card,.faq-item,.info-card,.contact-form,.cta-box"
 
-    }
+);
 
-    window.addEventListener("scroll",activeMenu);
+const revealAnimation = () => {
 
+revealItems.forEach(item => {
 
+const top = item.getBoundingClientRect().top;
 
-    /*==========================
-      SCROLL REVEAL
-    ==========================*/
+if (top < window.innerHeight - 120) {
 
-    const revealItems = document.querySelectorAll(
+item.style.opacity = "1";
 
-".section-heading,.about-wrapper,.why-card,.category-card,.collection-item,.showroom-wrapper,.process-card,.testimonial-card,.faq-item,.contact-card,.contact-form-box,.cta-wrapper,.footer-top"
+item.style.transform = "translateY(0)";
 
-    );
+}
 
-    const reveal = ()=>{
+});
 
-        revealItems.forEach(item=>{
+};
 
-            const top = item.getBoundingClientRect().top;
+revealItems.forEach(item => {
 
-            if(top < window.innerHeight - 100){
+item.style.opacity = "0";
 
-                item.style.opacity = "1";
+item.style.transform = "translateY(70px)";
 
-                item.style.transform = "translateY(0)";
+item.style.transition = ".8s ease";
 
-            }
+});
 
-        });
+revealAnimation();
 
-    }
+window.addEventListener("scroll", revealAnimation);
 
-    revealItems.forEach(item=>{
+/*=========================================
+COUNTER
+=========================================*/
 
-        item.style.opacity = "0";
+const counters = document.querySelectorAll(".stat-card h2");
 
-        item.style.transform = "translateY(60px)";
+let started = false;
 
-        item.style.transition = ".8s ease";
+function runCounter() {
 
-    });
+counters.forEach(counter => {
 
-    reveal();
+const original = counter.innerText;
 
-    window.addEventListener("scroll",reveal);
+const target = parseInt(original.replace(/\D/g, ""));
 
+let count = 0;
 
+const speed = Math.ceil(target / 120);
 
-    /*==========================
-      COUNTER
-    ==========================*/
+function update() {
 
-    const counters = document.querySelectorAll(".stat-card h2");
+count += speed;
 
-    let counterRun = false;
+if (count < target) {
 
-    function runCounter(){
+counter.innerText = count + "+";
 
-        counters.forEach(counter=>{
+requestAnimationFrame(update);
 
-            const original = counter.innerText;
+} else {
 
-            const target = parseInt(original.replace(/\D/g,""));
+counter.innerText = original;
 
-            let current = 0;
+}
 
-            const step = Math.max(1,Math.ceil(target/120));
+}
 
-            function update(){
+update();
 
-                current += step;
+});
 
-                if(current < target){
+}
 
-                    counter.innerText = current + "+";
+window.addEventListener("scroll", () => {
 
-                    requestAnimationFrame(update);
+const stats = document.querySelector(".stats");
 
-                }else{
+if (!stats) return;
 
-                    counter.innerText = original;
+if (window.scrollY > stats.offsetTop - 350 && !started) {
 
-                }
+runCounter();
 
-            }
+started = true;
 
-            update();
+}
 
-        });
+});
 
-    }
+}); /*==================================================
+KHUSHI MARBLES AND TILES
+PREMIUM SCRIPT
+PART 2
+==================================================*/
 
-    window.addEventListener("scroll",()=>{
+document.addEventListener("DOMContentLoaded", function () {
 
-        const stats = document.querySelector(".stats");
+/*=========================================
+FAQ ACCORDION
+=========================================*/
 
-        if(!stats) return;
+const faqItems = document.querySelectorAll(".faq-item");
 
-        if(window.scrollY > stats.offsetTop-350 && !counterRun){
+faqItems.forEach(item => {
 
-            runCounter();
+const question = item.querySelector(".faq-question");
+const answer = item.querySelector(".faq-answer");
+const icon = question.querySelector("span");
 
-            counterRun = true;
+question.addEventListener("click", () => {
 
-        }
+faqItems.forEach(other => {
 
-    });
+if (other !== item) {
 
+other.querySelector(".faq-answer").style.display = "none";
+other.querySelector(".faq-question span").textContent = "+";
 
+}
 
-    /*==========================
-      FAQ
-    ==========================*/
+});
 
-    document.querySelectorAll(".faq-item").forEach(item=>{
+if (answer.style.display === "block") {
 
-        const btn = item.querySelector(".faq-question");
+answer.style.display = "none";
+icon.textContent = "+";
 
-        const answer = item.querySelector(".faq-answer");
+} else {
 
-        const icon = btn.querySelector("span");
+answer.style.display = "block";
+icon.textContent = "−";
 
-        btn.addEventListener("click",()=>{
+}
 
-            document.querySelectorAll(".faq-item").forEach(other=>{
+});
 
-                if(other!==item){
+});
 
-                    other.querySelector(".faq-answer").style.display="none";
+/*=========================================
+CONTACT FORM
+=========================================*/
 
-                    other.querySelector("span").textContent="+";
+const form = document.querySelector(".contact-form form");
 
-                }
+if (form) {
 
-            });
+form.addEventListener("submit", function (e) {
 
-            if(answer.style.display==="block"){
+e.preventDefault();
 
-                answer.style.display="none";
+const name =
+form.querySelector('input[type="text"]').value;
 
-                icon.textContent="+";
+const phone =
+form.querySelector('input[type="tel"]').value;
 
-            }else{
+const product =
+form.querySelector("select").value;
 
-                answer.style.display="block";
+const message =
+form.querySelector("textarea").value;
 
-                icon.textContent="−";
+const text =
 
-            }
-
-        });
-
-    });
-
-
-
-    /*==========================
-      CONTACT FORM
-    ==========================*/
-
-    const form = document.querySelector(".contact-form-box form");
-
-    if(form){
-
-        form.addEventListener("submit",(e)=>{
-
-            e.preventDefault();
-
-            const name = form.querySelector('input[type="text"]').value;
-
-            const phone = form.querySelector('input[type="tel"]').value;
-
-            const product = form.querySelector("select").value;
-
-            const message = form.querySelector("textarea").value;
-
-            const text =
-
-`Hello Khushi Marble And Tiles,
+`Hello Khushi Marbles And Tiles,
 
 Name : ${name}
 
@@ -286,7 +286,7 @@ Message :
 
 ${message}`;
 
-            window.open(
+window.open(
 
 "https://wa.me/918087003749?text=" +
 
@@ -296,68 +296,139 @@ encodeURIComponent(text),
 
 );
 
-            form.reset();
+form.reset();
 
-        });
+});
 
-    }
+}
 
+/*=========================================
+SCROLL TO TOP
+=========================================*/
 
+const scrollBtn = document.querySelector(".scroll-top");
 
-    /*==========================
-      SCROLL TOP
-    ==========================*/
+if (scrollBtn) {
 
-    const topBtn = document.querySelector(".scroll-top");
+window.addEventListener("scroll", () => {
 
-    if(topBtn){
+if (window.scrollY > 500) {
 
-        window.addEventListener("scroll",()=>{
+scrollBtn.classList.add("show");
 
-            if(window.scrollY > 500){
+} else {
 
-                topBtn.classList.add("show");
+scrollBtn.classList.remove("show");
 
-            }else{
+}
 
-                topBtn.classList.remove("show");
+});
 
-            }
+scrollBtn.addEventListener("click", () => {
 
-        });
+window.scrollTo({
 
-        topBtn.addEventListener("click",()=>{
+top: 0,
 
-            window.scrollTo({
+behavior: "smooth"
 
-                top:0,
+});
 
-                behavior:"smooth"
+});
 
-            });
+}
 
-        });
+/*=========================================
+FLOATING BUTTON HOVER
+=========================================*/
 
-    }
+const floatingButtons = document.querySelectorAll(
 
+".call-float,.whatsapp-float"
 
+);
 
-    /*==========================
-      CARD HOVER EFFECT
-    ==========================*/
+floatingButtons.forEach(button => {
 
-    document.querySelectorAll(
+button.addEventListener("mouseenter", () => {
 
-".category-card,.collection-item,.why-card,.testimonial-card,.contact-card"
+button.style.transform = "scale(1.12)";
 
-    ).forEach(card=>{
+});
 
-        card.addEventListener("mouseenter",()=>{
+button.addEventListener("mouseleave", () => {
 
-            card.style.transition=".35s";
+button.style.transform = "scale(1)";
 
-        });
+});
 
-    });
+});
+
+/*=========================================
+BUTTON RIPPLE EFFECT
+=========================================*/
+
+const buttons = document.querySelectorAll(
+
+".primary-btn,.secondary-btn,.nav-btn"
+
+);
+
+buttons.forEach(btn => {
+
+btn.addEventListener("mouseenter", () => {
+
+btn.style.transition = ".35s";
+
+});
+
+});
+
+/*=========================================
+IMAGE PARALLAX
+=========================================*/
+
+const heroImage = document.querySelector(".hero-image img");
+
+window.addEventListener("scroll", () => {
+
+if (heroImage) {
+
+heroImage.style.transform =
+`translateY(${window.pageYOffset * 0.08}px)`;
+
+}
+
+});
+
+/*=========================================
+SHOWROOM IMAGE EFFECT
+=========================================*/
+
+const showroomImage = document.querySelector(".showroom-image img");
+
+window.addEventListener("mousemove", () => {
+
+if (showroomImage) {
+
+showroomImage.style.transition = ".5s";
+
+}
+
+});
+
+/*=========================================
+PRELOADER PLACEHOLDER
+=========================================*/
+
+window.addEventListener("load", () => {
+
+document.body.classList.add("loaded");
+
+});
+
+/*=========================================
+END
+=========================================*/
 
 });
