@@ -1,34 +1,49 @@
-/*======================================
-        LOADER
-======================================*/
+/*==========================================
+            LOADER
+==========================================*/
 
-window.addEventListener("load",()=>{
+window.addEventListener("load", () => {
 
 document.body.classList.add("loaded");
 
+const loader = document.querySelector(".loader");
+
+if(loader){
+
+setTimeout(()=>{
+
+loader.style.opacity="0";
+loader.style.visibility="hidden";
+
+},800);
+
+}
+
 });
 
 
 
-/*======================================
-        STICKY NAVBAR
-======================================*/
+/*==========================================
+            STICKY NAVBAR
+==========================================*/
 
-const navbar=document.querySelector(".navbar");
+const navbar = document.querySelector(".navbar");
 
 window.addEventListener("scroll",()=>{
 
-if(!navbar) return;
+if(window.scrollY>80){
 
-if(window.scrollY>60){
+navbar.style.background="rgba(15,15,15,.95)";
+navbar.style.backdropFilter="blur(20px)";
+navbar.style.boxShadow="0 15px 40px rgba(0,0,0,.35)";
+navbar.style.marginTop="10px";
 
-navbar.classList.add("sticky");
+}else{
 
-}
-
-else{
-
-navbar.classList.remove("sticky");
+navbar.style.background="rgba(18,18,18,.82)";
+navbar.style.backdropFilter="blur(20px)";
+navbar.style.boxShadow="none";
+navbar.style.marginTop="18px";
 
 }
 
@@ -36,23 +51,22 @@ navbar.classList.remove("sticky");
 
 
 
-/*======================================
-        MOBILE MENU
-======================================*/
+/*==========================================
+            MOBILE MENU
+==========================================*/
 
 const menuToggle=document.querySelector(".menu-toggle");
-
 const navLinks=document.querySelector(".nav-links");
 
-if(menuToggle && navLinks){
+if(menuToggle){
 
 menuToggle.addEventListener("click",()=>{
 
 navLinks.classList.toggle("active");
 
-menuToggle.classList.toggle("active");
-
 });
+
+}
 
 document.querySelectorAll(".nav-links a").forEach(link=>{
 
@@ -60,33 +74,25 @@ link.addEventListener("click",()=>{
 
 navLinks.classList.remove("active");
 
-menuToggle.classList.remove("active");
-
 });
 
 });
 
-}
 
 
-
-/*======================================
-        BACK TO TOP
-======================================*/
+/*==========================================
+            BACK TO TOP
+==========================================*/
 
 const topBtn=document.querySelector(".top-btn");
 
 window.addEventListener("scroll",()=>{
 
-if(!topBtn) return;
-
-if(window.scrollY>500){
+if(window.pageYOffset>500){
 
 topBtn.classList.add("show");
 
-}
-
-else{
+}else{
 
 topBtn.classList.remove("show");
 
@@ -112,9 +118,9 @@ behavior:"smooth"
 
 
 
-/*======================================
+/*==========================================
         SMOOTH SCROLL
-======================================*/
+==========================================*/
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
 
@@ -136,19 +142,58 @@ behavior:"smooth"
 
 });
 
-}); /*======================================
-        FAQ ACCORDION
-======================================*/
+});
 
-const faqItems=document.querySelectorAll(".faq-item");
+
+
+/*==========================================
+        ACTIVE NAV LINK
+==========================================*/
+
+const sections=document.querySelectorAll("section");
+const navItems=document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll",()=>{
+
+let current="";
+
+sections.forEach(section=>{
+
+const sectionTop=section.offsetTop-120;
+
+const sectionHeight=section.clientHeight;
+
+if(window.scrollY>=sectionTop){
+
+current=section.getAttribute("id");
+
+}
+
+});
+
+navItems.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#" + current){
+
+link.classList.add("active");
+
+}
+
+});
+
+}); /*==========================================
+            FAQ ACCORDION
+==========================================*/
+
+const faqItems = document.querySelectorAll(".faq-item");
 
 faqItems.forEach(item=>{
 
 const question=item.querySelector(".faq-question");
-
 const answer=item.querySelector(".faq-answer");
-
-const icon=question.querySelector("i");
+const icon=item.querySelector("i");
 
 question.addEventListener("click",()=>{
 
@@ -156,15 +201,9 @@ faqItems.forEach(other=>{
 
 if(other!==item){
 
-const otherAnswer=other.querySelector(".faq-answer");
-
-const otherIcon=other.querySelector(".faq-question i");
-
-otherAnswer.style.maxHeight=null;
-
-otherIcon.classList.remove("fa-minus");
-
-otherIcon.classList.add("fa-plus");
+other.querySelector(".faq-answer").style.maxHeight=null;
+other.querySelector("i").classList.remove("fa-minus");
+other.querySelector("i").classList.add("fa-plus");
 
 }
 
@@ -175,17 +214,13 @@ if(answer.style.maxHeight){
 answer.style.maxHeight=null;
 
 icon.classList.remove("fa-minus");
-
 icon.classList.add("fa-plus");
 
-}
-
-else{
+}else{
 
 answer.style.maxHeight=answer.scrollHeight+"px";
 
 icon.classList.remove("fa-plus");
-
 icon.classList.add("fa-minus");
 
 }
@@ -196,17 +231,77 @@ icon.classList.add("fa-minus");
 
 
 
-/*======================================
+/*==========================================
+        COUNTER ANIMATION
+==========================================*/
+
+const counters=document.querySelectorAll(".counter");
+
+const counterObserver=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+const counter=entry.target;
+
+const target=+counter.dataset.target;
+
+let count=0;
+
+const speed=target/120;
+
+const updateCounter=()=>{
+
+count+=speed;
+
+if(count<target){
+
+counter.innerText=Math.floor(count);
+
+requestAnimationFrame(updateCounter);
+
+}else{
+
+counter.innerText=target+"+";
+
+}
+
+};
+
+updateCounter();
+
+counterObserver.unobserve(counter);
+
+}
+
+});
+
+},{
+
+threshold:.5
+
+});
+
+counters.forEach(counter=>{
+
+counterObserver.observe(counter);
+
+});
+
+
+
+/*==========================================
         SCROLL REVEAL
-======================================*/
+==========================================*/
 
-const reveals=document.querySelectorAll(
+const revealElements=document.querySelectorAll(
 
-".trust-card,.about-card,.stat-box,.why-card,.product-card,.gallery-card,.review-card,.contact-card,.business-box"
+".about-content,.about-image,.why-card,.product-card,.gallery-card,.business-content,.business-image,.review-card,.contact-card"
 
 );
 
-const revealObserver=new IntersectionObserver((entries)=>{
+const revealObserver=new IntersectionObserver(entries=>{
 
 entries.forEach(entry=>{
 
@@ -224,129 +319,95 @@ threshold:.15
 
 });
 
-reveals.forEach(card=>{
+revealElements.forEach(el=>{
 
-revealObserver.observe(card);
+el.classList.add("hidden");
+
+revealObserver.observe(el);
 
 });
 
 
 
-/*======================================
-        COUNTER
-======================================*/
+/*==========================================
+        IMAGE FADE EFFECT
+==========================================*/
 
-const stats=document.querySelectorAll(".stat-box h2");
+const allImages=document.querySelectorAll("img");
 
-let counted=false;
+allImages.forEach(img=>{
 
-window.addEventListener("scroll",()=>{
+img.style.opacity="0";
+img.style.transition="opacity .8s ease";
 
-const section=document.querySelector(".stats");
+img.onload=()=>{
 
-if(!section || counted) return;
-
-const top=section.offsetTop-350;
-
-if(window.scrollY>top){
-
-counted=true;
-
-stats.forEach(counter=>{
-
-const text=counter.innerText;
-
-const target=parseInt(text);
-
-if(isNaN(target)) return;
-
-let count=0;
-
-const speed=Math.ceil(target/80);
-
-const update=()=>{
-
-count+=speed;
-
-if(count<target){
-
-counter.innerText=count+"+";
-
-requestAnimationFrame(update);
-
-}
-
-else{
-
-counter.innerText=target+"+";
-
-}
+img.style.opacity="1";
 
 };
 
-update();
-
-});
-
-}
-
 });
 
 
 
-/*======================================
-        HERO FLOATING EFFECT
-======================================*/
+/*==========================================
+        GALLERY HOVER EFFECT
+==========================================*/
 
-const boxes=document.querySelectorAll(".glass-box");
+const galleryCards=document.querySelectorAll(".gallery-card");
 
-window.addEventListener("mousemove",(e)=>{
+galleryCards.forEach(card=>{
 
-const x=(window.innerWidth/2-e.clientX)/45;
+card.addEventListener("mouseenter",()=>{
 
-const y=(window.innerHeight/2-e.clientY)/45;
+card.style.transform="translateY(-10px)";
 
-boxes.forEach(box=>{
+});
 
-box.style.transform=`translate(${x}px,${y}px)`;
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="translateY(0)";
 
 });
 
 });
-/*======================================
+
+
+
+/*==========================================
         PARALLAX HERO
-======================================*/
+==========================================*/
 
 const hero=document.querySelector(".hero");
 
 window.addEventListener("scroll",()=>{
 
-if(!hero) return;
+if(hero){
 
-hero.style.backgroundPositionY=window.pageYOffset*0.3+"px";
+hero.style.backgroundPositionY=
+window.pageYOffset*0.35+"px";
 
-});
+}
 
+});/*==========================================
+        BUTTON RIPPLE EFFECT
+==========================================*/
 
+const buttons=document.querySelectorAll(
 
-/*======================================
-        BUTTON RIPPLE
-======================================*/
-
-document.querySelectorAll(
 ".primary-btn,.secondary-btn,.call-btn"
-).forEach(button=>{
 
-button.style.position="relative";
-button.style.overflow="hidden";
+);
+
+buttons.forEach(button=>{
 
 button.addEventListener("click",function(e){
 
 const ripple=document.createElement("span");
 
-const size=Math.max(this.clientWidth,this.clientHeight);
-
 const rect=this.getBoundingClientRect();
+
+const size=Math.max(rect.width,rect.height);
 
 ripple.style.width=size+"px";
 ripple.style.height=size+"px";
@@ -354,11 +415,7 @@ ripple.style.height=size+"px";
 ripple.style.left=e.clientX-rect.left-size/2+"px";
 ripple.style.top=e.clientY-rect.top-size/2+"px";
 
-ripple.style.position="absolute";
-ripple.style.borderRadius="50%";
-ripple.style.background="rgba(255,255,255,.35)";
-ripple.style.transform="scale(0)";
-ripple.style.animation="ripple .6s linear";
+ripple.classList.add("ripple");
 
 this.appendChild(ripple);
 
@@ -374,396 +431,68 @@ ripple.remove();
 
 
 
-/*======================================
-        ACTIVE MENU
-======================================*/
+/*==========================================
+        HERO IMAGE FLOAT
+==========================================*/
 
-const sections=document.querySelectorAll("section[id]");
-const navItems=document.querySelectorAll(".nav-links a");
+const heroImage=document.querySelector(".hero-image img");
 
-window.addEventListener("scroll",()=>{
-
-let current="";
-
-sections.forEach(section=>{
-
-const top=section.offsetTop-150;
-const height=section.offsetHeight;
-
-if(pageYOffset>=top){
-
-current=section.getAttribute("id");
-
-}
-
-});
-
-navItems.forEach(link=>{
-
-link.classList.remove("active");
-
-if(link.getAttribute("href")==="#"+current){
-
-link.classList.add("active");
-
-}
-
-});
-
-});
-
-
-
-/*======================================
-        CARD HOVER EFFECT
-======================================*/
-
-document.querySelectorAll(
-
-".product-card,.review-card,.about-card,.why-card,.gallery-card"
-
-).forEach(card=>{
-
-card.addEventListener("mouseenter",()=>{
-
-card.style.transition=".35s";
-
-});
-
-card.addEventListener("mousemove",(e)=>{
-
-const rect=card.getBoundingClientRect();
-
-const x=e.clientX-rect.left;
-
-const y=e.clientY-rect.top;
-
-card.style.background=
-
-`radial-gradient(circle at ${x}px ${y}px,
-rgba(200,161,77,.10),
-var(--card) 65%)`;
-
-});
-
-card.addEventListener("mouseleave",()=>{
-
-card.style.background="var(--card)";
-
-});
-
-});
-
-
-
-/*======================================
-        IMAGE FADE
-======================================*/
-
-document.querySelectorAll("img").forEach(img=>{
-
-img.style.opacity="0";
-
-img.style.transition=".8s";
-
-img.onload=()=>{
-
-img.style.opacity="1";
-
-};
-
-});
-
-
-
-/*======================================
-        RIPPLE KEYFRAME
-======================================*/
-
-const style=document.createElement("style");
-
-style.innerHTML=`
-
-@keyframes ripple{
-
-0%{
-
-transform:scale(0);
-
-opacity:.6;
-
-}
-
-100%{
-
-transform:scale(4);
-
-opacity:0;
-
-}
-
-}
-
-.nav-links a.active{
-
-color:#C8A14D;
-
-}
-
-`;
-
-document.head.appendChild(style); /*======================================
-        PARALLAX HERO
-======================================*/
-
-const hero=document.querySelector(".hero");
-
-window.addEventListener("scroll",()=>{
-
-if(!hero) return;
-
-hero.style.backgroundPositionY=window.pageYOffset*0.3+"px";
-
-});
-
-
-
-/*======================================
-        BUTTON RIPPLE
-======================================*/
-
-document.querySelectorAll(
-".primary-btn,.secondary-btn,.call-btn"
-).forEach(button=>{
-
-button.style.position="relative";
-button.style.overflow="hidden";
-
-button.addEventListener("click",function(e){
-
-const ripple=document.createElement("span");
-
-const size=Math.max(this.clientWidth,this.clientHeight);
-
-const rect=this.getBoundingClientRect();
-
-ripple.style.width=size+"px";
-ripple.style.height=size+"px";
-
-ripple.style.left=e.clientX-rect.left-size/2+"px";
-ripple.style.top=e.clientY-rect.top-size/2+"px";
-
-ripple.style.position="absolute";
-ripple.style.borderRadius="50%";
-ripple.style.background="rgba(255,255,255,.35)";
-ripple.style.transform="scale(0)";
-ripple.style.animation="ripple .6s linear";
-
-this.appendChild(ripple);
-
-setTimeout(()=>{
-
-ripple.remove();
-
-},600);
-
-});
-
-});
-
-
-
-/*======================================
-        ACTIVE MENU
-======================================*/
-
-const sections=document.querySelectorAll("section[id]");
-const navItems=document.querySelectorAll(".nav-links a");
-
-window.addEventListener("scroll",()=>{
-
-let current="";
-
-sections.forEach(section=>{
-
-const top=section.offsetTop-150;
-const height=section.offsetHeight;
-
-if(pageYOffset>=top){
-
-current=section.getAttribute("id");
-
-}
-
-});
-
-navItems.forEach(link=>{
-
-link.classList.remove("active");
-
-if(link.getAttribute("href")==="#"+current){
-
-link.classList.add("active");
-
-}
-
-});
-
-});
-
-
-
-/*======================================
-        CARD HOVER EFFECT
-======================================*/
-
-document.querySelectorAll(
-
-".product-card,.review-card,.about-card,.why-card,.gallery-card"
-
-).forEach(card=>{
-
-card.addEventListener("mouseenter",()=>{
-
-card.style.transition=".35s";
-
-});
-
-card.addEventListener("mousemove",(e)=>{
-
-const rect=card.getBoundingClientRect();
-
-const x=e.clientX-rect.left;
-
-const y=e.clientY-rect.top;
-
-card.style.background=
-
-`radial-gradient(circle at ${x}px ${y}px,
-rgba(200,161,77,.10),
-var(--card) 65%)`;
-
-});
-
-card.addEventListener("mouseleave",()=>{
-
-card.style.background="var(--card)";
-
-});
-
-});
-
-
-
-/*======================================
-        IMAGE FADE
-======================================*/
-
-document.querySelectorAll("img").forEach(img=>{
-
-img.style.opacity="0";
-
-img.style.transition=".8s";
-
-img.onload=()=>{
-
-img.style.opacity="1";
-
-};
-
-});
-
-
-
-/*======================================
-        RIPPLE KEYFRAME
-======================================*/
-
-const style=document.createElement("style");
-
-style.innerHTML=`
-
-@keyframes ripple{
-
-0%{
-
-transform:scale(0);
-
-opacity:.6;
-
-}
-
-100%{
-
-transform:scale(4);
-
-opacity:0;
-
-}
-
-}
-
-.nav-links a.active{
-
-color:#C8A14D;
-
-}
-
-`;
-
-document.head.appendChild(style); /*======================================
-        CURSOR GLOW EFFECT
-======================================*/
-
-const glow=document.createElement("div");
-
-glow.className="cursor-glow";
-
-document.body.appendChild(glow);
+if(heroImage){
 
 window.addEventListener("mousemove",(e)=>{
 
-glow.style.left=e.clientX+"px";
+const x=(window.innerWidth/2-e.clientX)/40;
 
-glow.style.top=e.clientY+"px";
+const y=(window.innerHeight/2-e.clientY)/40;
+
+heroImage.style.transform=
+
+`translate(${x}px,${y}px)`;
 
 });
 
+window.addEventListener("mouseleave",()=>{
 
+heroImage.style.transform="translate(0,0)";
 
-/*======================================
-        FLOATING ANIMATION
-======================================*/
-
-document.querySelectorAll(".glass-box").forEach((box,index)=>{
-
-box.animate([
-
-{
-
-transform:"translateY(0px)"
-
-},
-
-{
-
-transform:"translateY(-12px)"
-
-},
-
-{
-
-transform:"translateY(0px)"
+});
 
 }
 
-],{
 
-duration:3000+(index*400),
 
-iterations:Infinity,
+/*==========================================
+        PRODUCT CARD TILT
+==========================================*/
 
-easing:"ease-in-out"
+const productCards=document.querySelectorAll(".product-card");
+
+productCards.forEach(card=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+const rotateX=((y/rect.height)-0.5)*8;
+
+const rotateY=((x/rect.width)-0.5)*-8;
+
+card.style.transform=
+
+`perspective(1000px)
+rotateX(${rotateX}deg)
+rotateY(${rotateY}deg)
+translateY(-10px)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="perspective(1000px) rotateX(0) rotateY(0)";
 
 });
 
@@ -771,59 +500,83 @@ easing:"ease-in-out"
 
 
 
-/*======================================
-        FADE IN SECTIONS
-======================================*/
+/*==========================================
+        GALLERY IMAGE ZOOM
+==========================================*/
 
-const allSections=document.querySelectorAll("section");
+document.querySelectorAll(".gallery-card img")
 
-const sectionObserver=new IntersectionObserver((entries)=>{
+.forEach(image=>{
 
-entries.forEach(entry=>{
+image.addEventListener("click",()=>{
 
-if(entry.isIntersecting){
+const popup=document.createElement("div");
 
-entry.target.style.opacity="1";
+popup.className="image-popup";
 
-entry.target.style.transform="translateY(0)";
+popup.innerHTML=`
 
-}
+<div class="popup-bg">
 
-});
+<img src="${image.src}">
 
-},{
+</div>
 
-threshold:.10
+`;
 
-});
+document.body.appendChild(popup);
 
-allSections.forEach(section=>{
+popup.addEventListener("click",()=>{
 
-section.style.opacity="0";
-
-section.style.transform="translateY(60px)";
-
-section.style.transition=".8s ease";
-
-sectionObserver.observe(section);
+popup.remove();
 
 });
 
+});
+
+});
 
 
-/*======================================
-        BUTTON HOVER SCALE
-======================================*/
 
-document.querySelectorAll(
+/*==========================================
+        NAVBAR LINK HOVER
+==========================================*/
 
-".primary-btn,.secondary-btn,.call-btn"
+document.querySelectorAll(".nav-links a")
 
-).forEach(btn=>{
+.forEach(link=>{
+
+link.addEventListener("mouseenter",()=>{
+
+link.style.letterSpacing="1px";
+
+});
+
+link.addEventListener("mouseleave",()=>{
+
+link.style.letterSpacing="0";
+
+});
+
+});
+
+
+
+/*==========================================
+        FLOATING BUTTON ANIMATION
+==========================================*/
+
+const floats=document.querySelectorAll(
+
+".whatsapp-float,.call-float"
+
+);
+
+floats.forEach(btn=>{
 
 btn.addEventListener("mouseenter",()=>{
 
-btn.style.transform="scale(1.05)";
+btn.style.transform="scale(1.15)";
 
 });
 
@@ -837,9 +590,9 @@ btn.style.transform="scale(1)";
 
 
 
-/*======================================
-        PREVENT IMAGE DRAG
-======================================*/
+/*==========================================
+        DISABLE IMAGE DRAG
+==========================================*/
 
 document.querySelectorAll("img").forEach(img=>{
 
@@ -849,45 +602,147 @@ img.setAttribute("draggable","false");
 
 
 
-/*======================================
-        SCROLL PROGRESS BAR
-======================================*/
+/*==========================================
+        PAGE FADE IN
+==========================================*/
 
-const progress=document.createElement("div");
+document.body.style.opacity="0";
 
-progress.style.position="fixed";
+window.addEventListener("load",()=>{
 
-progress.style.top="0";
+document.body.style.transition="opacity .8s ease";
 
-progress.style.left="0";
+document.body.style.opacity="1";
 
-progress.style.height="4px";
+}); /*==========================================
+        LAZY LOADING IMAGES
+==========================================*/
 
-progress.style.width="0%";
+const lazyImages=document.querySelectorAll("img");
 
-progress.style.background="#C8A14D";
+const imageObserver=new IntersectionObserver((entries,observer)=>{
 
-progress.style.zIndex="999999";
+entries.forEach(entry=>{
 
-document.body.appendChild(progress);
+if(entry.isIntersecting){
 
-window.addEventListener("scroll",()=>{
+const img=entry.target;
 
-const scrollTop=document.documentElement.scrollTop;
+img.classList.add("loaded");
 
-const scrollHeight=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+observer.unobserve(img);
 
-const percent=(scrollTop/scrollHeight)*100;
+}
 
-progress.style.width=percent+"%";
+});
+
+},{
+threshold:0.1
+});
+
+lazyImages.forEach(img=>{
+
+imageObserver.observe(img);
 
 });
 
 
 
-/*======================================
+/*==========================================
+        WINDOW RESIZE
+==========================================*/
+
+window.addEventListener("resize",()=>{
+
+clearTimeout(window.resizeTimer);
+
+window.resizeTimer=setTimeout(()=>{
+
+console.log("Layout Updated");
+
+},200);
+
+});
+
+
+
+/*==========================================
+        PRELOAD HERO IMAGE
+==========================================*/
+
+const preloadImage=new Image();
+
+preloadImage.src="hero.png";
+
+
+
+/*==========================================
+        SMOOTH BUTTON HOVER
+==========================================*/
+
+document.querySelectorAll(
+
+".primary-btn,.secondary-btn,.call-btn"
+
+).forEach(btn=>{
+
+btn.addEventListener("mouseenter",()=>{
+
+btn.style.transition=".35s";
+
+});
+
+});
+
+
+
+/*==========================================
+        PREVENT DOUBLE CLICK
+==========================================*/
+
+document.querySelectorAll("a").forEach(link=>{
+
+link.addEventListener("dblclick",(e)=>{
+
+e.preventDefault();
+
+});
+
+});
+
+
+
+/*==========================================
+        SCROLL PROGRESS BAR
+==========================================*/
+
+const progress=document.createElement("div");
+
+progress.className="scroll-progress";
+
+document.body.appendChild(progress);
+
+window.addEventListener("scroll",()=>{
+
+const totalHeight=
+
+document.documentElement.scrollHeight-
+
+window.innerHeight;
+
+const progressHeight=
+
+(window.pageYOffset/totalHeight)*100;
+
+progress.style.width=progressHeight+"%";
+
+});
+
+
+
+/*==========================================
         CONSOLE BRANDING
-======================================*/
+==========================================*/
 
 console.clear();
 
@@ -895,23 +750,31 @@ console.log(
 
 "%cKhushi Marble & Tiles",
 
-"font-size:28px;color:#C8A14D;font-weight:bold;"
+"font-size:26px;color:#C9A227;font-weight:bold;"
 
 );
 
 console.log(
 
-"%cPremium Website Developed Successfully",
+"%cPremium Marble • Granite • Designer Tiles",
 
-"font-size:15px;color:white;"
+"font-size:14px;color:#ffffff;"
+
+);
+
+console.log(
+
+"%cDesigned & Developed By Marwar Infotech",
+
+"font-size:14px;color:#C9A227;"
 
 );
 
 
 
-/*======================================
-        PAGE LOADED
-======================================*/
+/*==========================================
+        WEBSITE READY
+==========================================*/
 
 window.addEventListener("load",()=>{
 
@@ -921,20 +784,6 @@ console.log("Website Loaded Successfully");
 
 
 
-/*======================================
-        PERFORMANCE
-======================================*/
-
-let resizeTimer;
-
-window.addEventListener("resize",()=>{
-
-clearTimeout(resizeTimer);
-
-resizeTimer=setTimeout(()=>{
-
-console.log("Layout Updated");
-
-},250);
-
-});
+/*==========================================
+        END OF SCRIPT
+==========================================*/
